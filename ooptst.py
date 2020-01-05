@@ -1,6 +1,6 @@
-# 1 Preparation of configuration data frame - verifying system components type and amount
+# 1 Input  data. Preparation of configuration data - verifying system components type and amount
+# could be JSON-like parsed hard card or something else
 
-# 2 JSON-like parced hard card or something else
 systemConfig = {
     'bbus': {
         'bbu1': {'model': 'Eaton 5P UPS', 'PN': 'BBU-00002-A'},
@@ -30,12 +30,18 @@ systemConfig = {
     }
 }
 
+#3 addtional component descriptors for proper interface counting and other skybox/ibox depending stuff
+nodeifs={'r740': {'ISCSI': 8, 'data': 6, 'sas': 4, 'IB': 2, 'power':2},
+             'r730': {'ISCSI': 8, 'data': 4,'sas': 4, 'IB': 2, 'power':2}}
+
+enclosureifs = {'NDS-4600': {'IOM-A': 4, 'IOM-B': 4, 'power': 2}}
+
+
 # defining some base object class
 class Component:
     def __init__(self, hwconfig):
         self.config = {}
         self.subcomponents = {}
-
         for key in hwconfig:
             self.config[key] = hwconfig[key]
 
@@ -48,7 +54,7 @@ class Node():
 
         for key in hwconfig:
             self.config[key] = hwconfig[key]
-        self.fcports = {}
+
 #
 # class Enclosure():
 #     pass
@@ -61,7 +67,7 @@ class Node():
 testingproc = {}
 
 def createConfigInstances(systemConfig, comptype):
-    print("Creating {} class  objects....".format(comptype.rstrip('s')))
+    print("Creating  {} equipment class  objects....".format(comptype.rstrip('s')))
     for component in systemConfig[comptype]:
         #possible scenario to build some mapping type to define which
         testingproc[component] = Component(systemConfig[comptype][component])

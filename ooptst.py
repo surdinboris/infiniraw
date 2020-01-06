@@ -32,28 +32,30 @@ systemConfig = {
 
 #3 addtional component descriptors for proper interface counting and other skybox/ibox depending stuff
 nodeifs={'r740': {'ISCSI': 8, 'data': 6, 'sas': 4, 'IB': 2, 'power':2},
-             'r730': {'ISCSI': 8, 'data': 4,'sas': 4, 'IB': 2, 'power':2}}
+             'r730': {'ISCSI': 8, 'data': 4, 'sas': 4, 'IB': 2, 'power':2}}
 
 enclosureifs = {'NDS-4600': {'IOM-A': 4, 'IOM-B': 4, 'power': 2}}
 
+bbuifs = {'APC 1500': {'usb':1, 'eth': 1, 'power': 1, 'outlet': 1},
+          'Eaton 5P UPS': {'usb': 1, 'eth': 1, 'power': 1, 'powoutlet': 2}}
 
 # defining some base object class
 class Component:
     def __init__(self, hwconfig):
         self.config = {}
-        self.subcomponents = {}
+        # self.subcomponents = {}
         for key in hwconfig:
             self.config[key] = hwconfig[key]
 
 # it may be some specific factory depending by component type
 # in case of automatic FC\DATA ports amount evaluation for nodes for example
-class Node():
-    def __init__(self, hwconfig):
-        self.config = {}
-        self.subcomponents = {}
-
-        for key in hwconfig:
-            self.config[key] = hwconfig[key]
+# class Node():
+#     def __init__(self, hwconfig):
+#         self.config = {}
+#         self.subcomponents = {}
+#
+#         for key in hwconfig:
+#             self.config[key] = hwconfig[key]
 
 #
 # class Enclosure():
@@ -80,8 +82,13 @@ def createSystemConfig(systemConfig):
 
 createSystemConfig(systemConfig)
 
-print(testingproc)
+# print(testingproc)
 
+def generateports(testingproc):
+    for dev in testingproc.items():
+        print(dev)
+
+generateports(testingproc)
 # for confobj in testingproc:
 #     print(testingproc[confobj].__dict__. items())
 # print(testingproc['bbu1'])
